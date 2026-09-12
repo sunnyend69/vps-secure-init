@@ -1,0 +1,64 @@
+policy_version: 2
+onepassword_vault: VPS
+
+platforms:
+  supported: [ubuntu-22.04, ubuntu-24.04, ubuntu-26.04, debian-12, debian-13]
+
+credentials:
+  username_length: 18
+  password_length: 100
+  passphrase_length: 100
+  key_type: ed25519
+  key_kdf_rounds: 100
+  ssh_port_mode: random
+  ssh_port_range: [20000, 60000]
+  ssh_port: null
+
+defaults:
+  profile: standard
+
+profiles:
+  standard:
+    ssh:
+      login_grace_time: 45
+      max_auth_tries: 5
+      max_sessions: 5
+      client_alive_interval: 300
+      client_alive_count_max: 3
+      allow_tcp_forwarding: false
+      allow_agent_forwarding: false
+      x11_forwarding: false
+    firewall:
+      enabled: true
+      default_incoming: deny
+      default_outgoing: allow
+      ssh_rate_limit: true
+      ipv6_mode: auto
+      allowed_services: []
+      allowed_ports: []
+    fail2ban:
+      enabled: true
+      bantime: 1h
+      findtime: 10m
+      maxretry: 5
+      backend: auto
+      ignoreip: []
+    sudo:
+      bootstrap_mode: nopasswd-all
+      final_mode: nopasswd-all
+
+  web:
+    extends: standard
+    firewall:
+      allowed_services: [http, https]
+
+controller:
+  connect_timeout: 30
+  step_timeout: 300
+  transport_retries: 1
+  host_key_policy: accept-new-then-pin
+
+report:
+  formats: [json, markdown]
+  address_display: masked
+  include_raw_evidence: false

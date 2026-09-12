@@ -1,0 +1,20 @@
+hosts:
+  - id: hk-01
+    address: 203.0.113.11
+    initial_port: 22
+    initial_user: root
+    initial_auth: key
+    initial_key: ~/.ssh/provider_hk_01
+    platform: auto
+    profile: standard
+    # 可选主机级覆盖。完整参数见 docs/LINUX-PARAMETER-CATALOG.md。
+    # overrides:
+    #   credentials:
+    #     ssh_port_mode: manual
+    #     ssh_port: 40993
+    #   firewall:
+    #     allowed_services: [http, https]
+
+    # 初始密码登录时改为：
+    # initial_auth: password
+    # 首次运行初始化时会在终端隐藏提示输入，不要把密码写在本文件。

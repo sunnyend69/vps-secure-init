@@ -1,0 +1,41 @@
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+
+# Python build and package metadata (regenerate locally or in CI)
+build/
+dist/
+*.egg-info/
+
+# Local environment and developer-tool settings
+.env
+.env.*
+!.env.example
+.python-version
+.coverage
+htmlcov/
+
+# Real deployment configuration and all execution artifacts
+config/hosts.yaml
+config/policy.yaml
+config/credentials.json
+state/
+logs/*.log
+logs/**
+reports/
+
+# Credentials, keys, certificates, and password-manager exports
+*.pem
+*.key
+*.pub
+*.p12
+*.pfx
+*.jks
+*.kdbx
+*.age
+*.asc
+*.gpg
+*.ovpn
+1password-export*/
+op-export*/
