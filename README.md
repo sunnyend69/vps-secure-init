@@ -33,13 +33,33 @@ During credential generation, the project creates two linked records in 1Passwor
 
 The local controller keeps only the minimum non-secret metadata required to resume work: the SSH port, local private-key path, and 1Password item ID. When a recovery workflow needs credentials, it reads only the needed fields from 1Password and never prints their values.
 
-Before running the menu, verify that the CLI can access your account and that the configured vault already exists:
+### Install and connect the 1Password CLI
+
+This project needs the **1Password CLI**, not only the desktop application. On macOS, install the terminal tool with [Homebrew as described in the official CLI guide](https://www.1password.dev/cli/get-started):
 
 ```bash
-op account list
+brew install 1password-cli
+op --version
 ```
 
-Set `onepassword_vault` in your local `config/policy.yaml` to that vault's name. The example policy uses `VPS`. If `op` is missing, signed out, locked, or cannot access the vault, credential generation stops rather than falling back to an insecure local secret store.
+After installation, unlock the 1Password app and enable **Settings → Developer → Integrate with 1Password CLI**. The first CLI command requests an approval through the app; Touch ID may be used when enabled in 1Password. If you have more than one 1Password account, run `op signin` and select the intended account.
+
+Verify that the CLI can access your account and vaults:
+
+```bash
+op vault list
+```
+
+### Configure the vault for this project
+
+Create or choose a dedicated vault in 1Password, then set its exact name in the local policy file. The vault must exist before credential generation.
+
+```yaml
+# config/policy.yaml — local only; never commit this file
+onepassword_vault: VPS
+```
+
+Confirm that the configured vault is shown by `op vault list`. The example policy uses `VPS`; use a different name if that better fits your organization. If `op` is missing, signed out, locked, or cannot access the configured vault, credential generation stops rather than falling back to an insecure local secret store.
 
 ## Quick start
 
@@ -53,8 +73,8 @@ python3 -m pip install -e .
 
 cp config/hosts.example.yaml config/hosts.yaml
 cp config/policy.example.yaml config/policy.yaml
-# Set onepassword_vault in config/policy.yaml, then verify the session.
-op account list
+# Set onepassword_vault in config/policy.yaml, then approve the CLI session.
+op vault list
 vpsctl --menu
 ```
 
